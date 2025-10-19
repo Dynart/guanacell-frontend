@@ -1,0 +1,8 @@
+@media (max-width: 576px) {
+  .table {
+    font-size: 0.9rem;
+  }
+  .btn {
+    width: 100%;
+  }
+}
