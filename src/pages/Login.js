@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import {login} from '../services/api';
 
 const Login = ({ setIsAuthenticated, setUserRole }) => {
   const [username, setUsername] = useState('');
@@ -10,19 +10,16 @@ const Login = ({ setIsAuthenticated, setUserRole }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('role', response.data.role); // Guardar el rol
-      setIsAuthenticated(true);
-      setUserRole(response.data.role); // Actualizar el estado del rol
+      const { token, role } = await login({ username, password });
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', role);
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Error al iniciar sesión');
     }
   };
-
+ 
   return (
     <div className="container mt-4">
       <h2>Iniciar Sesión</h2>
