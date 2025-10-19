@@ -13,12 +13,17 @@ function App() {
  
   useEffect(() => {
     console.log('App.js - Estado actual:', { isAuthenticated, userRole });
-    // Sincronizar estado con localStorage al cargar la página
+    // Sincronizar estado con localStorage
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
     if (token && !isAuthenticated) {
+      console.log('App.js - Sincronizando estado desde localStorage:', { token, role });
       setIsAuthenticated(true);
-      setUserRole(role);
+      setUserRole(role || null);
+    } else if (!token && isAuthenticated) {
+      console.log('App.js - No hay token, desautenticando');
+      setIsAuthenticated(false);
+      setUserRole(null);
     }
   }, [isAuthenticated, userRole]);
 

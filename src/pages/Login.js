@@ -8,16 +8,23 @@ const Login = ({ setIsAuthenticated, setUserRole }) => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log('Enviando login con:', { username, password });
       const response = await login({ username, password });
+      console.log('Respuesta del login:', response);
       const { token, role } = response;
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
-      navigate('/'); // Redirige a la página principal
+      console.log('Token y rol guardados:', { token, role });
+      setIsAuthenticated(true);
+      setUserRole(role);
+      console.log('Estado actualizado, intentando redirigir a /');
+      navigate('/', { replace: true });
+      console.log('Redirección ejecutada');
     } catch (err) {
-      console.error('Error en login:', err);
+      console.error('Error en login:', err.response?.data || err.message);
       setError(err.response?.data?.message || 'Error al iniciar sesión');
     }
   };
