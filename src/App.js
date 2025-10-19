@@ -12,15 +12,13 @@ function App() {
 
  
   useEffect(() => {
-    console.log('App.js - Estado actual:', { isAuthenticated, userRole });
-    // Sincronizar estado con localStorage al cargar la página
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-    if (token && !isAuthenticated) {
-      setIsAuthenticated(true);
-      setUserRole(role);
-    }
-  }, [isAuthenticated, userRole]);
+    const handleStorageChange = () => {
+      setIsAuthenticated(!!localStorage.getItem('token'));
+      setUserRole(localStorage.getItem('role') || null);
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
