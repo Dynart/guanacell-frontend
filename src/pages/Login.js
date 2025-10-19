@@ -12,7 +12,6 @@ const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await login({ username, password });
-      console.log('Respuesta del login:', response); // Para debuggear
       const { token, role } = response;
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);

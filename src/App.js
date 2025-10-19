@@ -10,15 +10,17 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
   const [userRole, setUserRole] = useState(localStorage.getItem('role') || null);
 
-  // Sincronizar isAuthenticated y userRole con localStorage
+ 
   useEffect(() => {
-    const handleStorageChange = () => {
-      setIsAuthenticated(!!localStorage.getItem('token'));
-      setUserRole(localStorage.getItem('role') || null);
-    };
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+    console.log('App.js - Estado actual:', { isAuthenticated, userRole });
+    // Sincronizar estado con localStorage al cargar la página
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+    if (token && !isAuthenticated) {
+      setIsAuthenticated(true);
+      setUserRole(role);
+    }
+  }, [isAuthenticated, userRole]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -31,7 +33,7 @@ function App() {
     <Router>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
-          <Link className="navbar-brand" to={isAuthenticated ? "/" : "/login"}>Portafolio Negocio</Link>
+          <Link className="navbar-brand" to={isAuthenticated ? "/" : "/login"}>App Precios</Link>
           <button
             className="navbar-toggler"
             type="button"
