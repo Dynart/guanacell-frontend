@@ -8,18 +8,20 @@ const Login = ({ setIsAuthenticated, setUserRole }) => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { token, role } = await login({ username, password });
+      const response = await login({ username, password });
+      console.log('Respuesta del login:', response); // Para debuggear
+      const { token, role } = response;
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
-      navigate('/');
+      navigate('/'); // Redirige a la página principal
     } catch (err) {
+      console.error('Error en login:', err);
       setError(err.response?.data?.message || 'Error al iniciar sesión');
     }
   };
- 
   return (
     <div className="container mt-4">
       <h2>Iniciar Sesión</h2>
