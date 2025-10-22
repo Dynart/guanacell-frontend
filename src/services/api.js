@@ -75,3 +75,15 @@ export const deleteTodo = async (id) => {
   console.log('deleteTodo response:', response.data);
   return response.data;
 };
+
+export const getCompletedTodo = async () => {
+  const response = await api.get('/todos/completed');
+  console.log('getCompletedTodo response:', response.data);
+  return response.data;
+};
+
+export const getUsers = async () => {
+  const response = await api.get('/todos/users');
+  console.log('getUsers response:', response.data);
+  return response.data;
+};

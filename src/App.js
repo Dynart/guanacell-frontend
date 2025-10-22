@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
+import TodoEditForm from './components/TodoEditForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -74,14 +75,20 @@ function App() {
             element={<Navigate to="/login" />}
           />
 
-            <Route
-    path="/todos"
-    element={isAuthenticated ? <TodoList userRole={userRole} /> : <Navigate to="/login" />}
-  />
-  <Route
-    path="/add-todo"
-    element={isAuthenticated ? <TodoForm /> : <Navigate to="/login" />}
-  />
+             <Route
+            path="/todos"
+            element={isAuthenticated ? <TodoList userRole={userRole} /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/add-todo"
+            element={isAuthenticated ? <TodoForm userRole={userRole} /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/edit-todo/:id"
+            element={isAuthenticated && userRole === 'admin' ? <TodoEditForm userRole={userRole} /> : <Navigate to="/login" />}
+          />
+
+          
 
         </Routes>
         

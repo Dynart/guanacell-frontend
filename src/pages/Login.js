@@ -29,11 +29,11 @@ const Login = ({ setIsAuthenticated, setUserRole }) => {
     }
   };
   return (
-    <div className="container mt-4">
+    <div className="container mt-3 ">
       <h2>Iniciar Sesión</h2>
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
+      <form className="" onSubmit={handleSubmit} >
+        <div className="mb-3 col-auto">
           <label htmlFor="username" className="form-label">Usuario</label>
           <input
             type="text"
