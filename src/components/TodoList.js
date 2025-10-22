@@ -42,10 +42,6 @@ const TodoList = ({ userRole }) => {
 
   const handleToggleComplete = async (id, completed) => {
     try {
-        if (userRole !== 'admin' && completed) {
-        setError('No tienes permiso para desmarcar tareas completadas');
-        return;
-      }
       await updateTodo(id, { completed: !completed });
       fetchTodos();
     } catch (err) {
@@ -56,7 +52,6 @@ const TodoList = ({ userRole }) => {
   if (loading) return <div className="text-center">Cargando tareas...</div>;
   if (error) return <div className="alert alert-danger">{error}</div>;
 
-  
   return (
   <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
