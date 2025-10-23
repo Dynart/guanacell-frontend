@@ -54,36 +54,30 @@ export const login = async (credentials) => {
 
 export const getTodos = async (page = 1, limit = 6) => {
   const response = await api.get(`/todos?page=${page}&limit=${limit}`);
-  console.log(`getTodos response (page ${page}, limit ${limit}):`, response.data);
   return response.data;
 };
 
 export const addTodo = async (todoData) => {
   const response = await api.post('/todos', todoData);
-  console.log('addTodo response:', response.data);
   return response.data;
 };
 
 export const updateTodo = async (id, todoData) => {
   const response = await api.put(`/todos/${id}`, todoData);
-  console.log('updateTodo response:', response.data);
   return response.data;
 };
 
 export const deleteTodo = async (id) => {
   const response = await api.delete(`/todos/${id}`);
-  console.log('deleteTodo response:', response.data);
   return response.data;
 };
 
 export const getCompletedTodo = async (page = 1, limit = 6) => {
   const response = await api.get(`/todos/completed?page=${page}&limit=${limit}`);
-  console.log(`getCompletedTodo response (page ${page}, limit ${limit}):`, response.data);
   return response.data;
 };
 
 export const getUsers = async () => {
   const response = await api.get('/todos/users');
-  console.log('getUsers response:', response.data);
   return response.data;
 };
