@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
 import TodoEditForm from './components/TodoEditForm';
+import CompletedTodoList from './components/CompletedTodoList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -16,16 +17,13 @@ function App() {
 
  
   useEffect(() => {
-    console.log('App.js - Estado actual:', { isAuthenticated, userRole });
     // Sincronizar estado con localStorage
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
     if (token && !isAuthenticated) {
-      console.log('App.js - Sincronizando estado desde localStorage:', { token, role });
       setIsAuthenticated(true);
       setUserRole(role || null);
     } else if (!token && isAuthenticated) {
-      console.log('App.js - No hay token, desautenticando');
       setIsAuthenticated(false);
       setUserRole(null);
     }
@@ -85,10 +83,13 @@ function App() {
           />
           <Route
             path="/edit-todo/:id"
-            element={isAuthenticated && userRole === 'admin' ? <TodoEditForm userRole={userRole} /> : <Navigate to="/login" />}
+            element={isAuthenticated ? <TodoEditForm userRole={userRole} /> : <Navigate to="/login" />}
           />
 
-          
+           <Route
+          path="/completed"
+          element={isAuthenticated ? <CompletedTodoList userRole={userRole} /> : <Navigate to="/login" />}
+        />
 
         </Routes>
         

@@ -29,12 +29,12 @@ const TodoForm = ({ userRole }) => {
       if (assignedTo) {
         todoData.assignedTo = assignedTo;
       }
-      console.log('Enviando tarea:', todoData);
+      
       await addTodo(todoData);
       setError(null);
       navigate('/todos', { replace: true });
     } catch (err) {
-      console.error('Error al crear tarea:', err);
+      
       setError(err.response?.data?.message || 'Error al agregar la tarea');
     }
   };

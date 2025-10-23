@@ -1,38 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getTodos, deleteTodo, updateTodo } from '../services/api';
+import { getCompletedTodo, deleteTodo, updateTodo } from '../services/api';
 
-const TodoList = ({ userRole }) => {
-  const [todos, setTodos] = useState([]);
+const CompletedTodoList = ({ userRole }) => {
+  const [completedTodos, setCompletedTodos] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
- 
   const tasksPerPage = 6;
 
-  const fetchTodos = async () => {
+  const fetchCompletedTodos = async () => {
     try {
       setLoading(true);
-      const activeTodos = await getTodos();
-      console.log('Tareas pendientes cargadas:', activeTodos);
-      setTodos(activeTodos);
+      const completedTodos = await getCompletedTodo();
+      
+      setCompletedTodos(completedTodos);
       setLoading(false);
     } catch (err) {
-      console.error('Error al cargar tareas:', err);
-      setError('Error al cargar las tareas');
+      
+      setError('Error al cargar las tareas completadas');
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchTodos();
+    fetchCompletedTodos();
   }, []);
 
   const handleDelete = async (id) => {
     if (window.confirm('¿Estás seguro de eliminar esta tarea?')) {
       try {
         await deleteTodo(id);
-        fetchTodos();
+        fetchCompletedTodos();
       } catch (err) {
         console.error('Error al eliminar tarea:', err);
         setError('Error al eliminar la tarea');
@@ -43,11 +42,11 @@ const TodoList = ({ userRole }) => {
   const handleToggleComplete = async (id, completed) => {
     try {
       const newCompleted = !completed;
-      console.log(`Enviando PUT /api/todos/${id} con completed: ${newCompleted}`);
+      
       await updateTodo(id, { completed: newCompleted });
-      fetchTodos();
+      fetchCompletedTodos();
     } catch (err) {
-      console.error('Error al actualizar tarea:', err);
+      
       setError(err.response?.data?.message || 'Error al actualizar la tarea');
     }
   };
@@ -65,9 +64,8 @@ const TodoList = ({ userRole }) => {
   };
 
   // Paginación en el cliente
-  const pendingTodos = todos.filter(todo => !todo.completed);
-  const totalPages = Math.ceil(pendingTodos.length / tasksPerPage);
-  const paginatedTodos = pendingTodos.slice(
+  const totalPages = Math.ceil(completedTodos.length / tasksPerPage);
+  const paginatedTodos = completedTodos.slice(
     (currentPage - 1) * tasksPerPage,
     currentPage * tasksPerPage
   );
@@ -79,25 +77,25 @@ const TodoList = ({ userRole }) => {
     }
   };
 
-  if (loading) return <div className="text-center">Cargando tareas...</div>;
+  if (loading) return <div className="text-center">Cargando tareas completadas...</div>;
   if (error) return <div className="alert alert-danger">{error}</div>;
 
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Lista de Tareas</h2>
+        <h2>Tareas Completadas</h2>
         <div>
-          <Link to="/completed" className="btn btn-secondary">
-            Ver Completadas
+          <Link to="/todos" className="btn btn-secondary">
+            Volver a Tareas Pendientes
           </Link>
         </div>
       </div>
 
-      <h4>Tareas Pendientes ({pendingTodos.length})</h4>
+      <h4>Tareas Completadas ({completedTodos.length})</h4>
       <div className="row">
         {paginatedTodos.length === 0 ? (
           <div className="text-center mt-4">
-            <p className="text-muted">No hay tareas pendientes. ¡Agrega una!</p>
+            <p className="text-muted">No hay tareas completadas.</p>
           </div>
         ) : (
           paginatedTodos.map(todo => (
@@ -106,11 +104,13 @@ const TodoList = ({ userRole }) => {
                 <div className="card-body">
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
-                      <h5 className="card-title">{todo.title}</h5>
+                      <h5 className="card-title text-decoration-line-through text-muted">
+                        {todo.title}
+                      </h5>
                       <small className="text-muted">
                         Creada por: {todo.createdBy?.username || 'Desconocido'}<br />
                         Asignada a: {todo.assignedTo?.username || 'Nadie'}<br />
-                        Creada: {formatDateTime(todo.createdAt)}
+                        Completada: {formatDateTime(todo.updatedAt)}
                       </small>
                     </div>
                     <div className="d-flex justify-content-start">
@@ -118,7 +118,7 @@ const TodoList = ({ userRole }) => {
                         className="btn btn-sm btn-outline-success me-2"
                         onClick={() => handleToggleComplete(todo._id, todo.completed)}
                       >
-                        Completar
+                        Reabrir
                       </button>
                       {userRole === 'admin' && (
                         <div>
@@ -146,7 +146,7 @@ const TodoList = ({ userRole }) => {
       </div>
 
       {totalPages > 1 && (
-        <nav aria-label="Paginación de tareas pendientes" className="mt-4">
+        <nav aria-label="Paginación de tareas completadas" className="mt-4">
           <ul className="pagination justify-content-center">
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="btn btn-outline-dark" onClick={() => handlePageChange(currentPage - 1)}>
@@ -172,4 +172,4 @@ const TodoList = ({ userRole }) => {
   );
 };
 
-export default TodoList;
+export default CompletedTodoList;

@@ -52,9 +52,9 @@ export const login = async (credentials) => {
 
 //Manejo de TO-DO
 
-export const getTodos = async () => {
-  const response = await api.get('/todos');
-  console.log('getTodos response:', response.data);
+export const getTodos = async (page = 1, limit = 6) => {
+  const response = await api.get(`/todos?page=${page}&limit=${limit}`);
+  console.log(`getTodos response (page ${page}, limit ${limit}):`, response.data);
   return response.data;
 };
 
@@ -76,9 +76,9 @@ export const deleteTodo = async (id) => {
   return response.data;
 };
 
-export const getCompletedTodo = async () => {
-  const response = await api.get('/todos/completed');
-  console.log('getCompletedTodo response:', response.data);
+export const getCompletedTodo = async (page = 1, limit = 6) => {
+  const response = await api.get(`/todos/completed?page=${page}&limit=${limit}`);
+  console.log(`getCompletedTodo response (page ${page}, limit ${limit}):`, response.data);
   return response.data;
 };
 
