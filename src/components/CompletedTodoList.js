@@ -13,11 +13,11 @@ const CompletedTodoList = ({ userRole }) => {
     try {
       setLoading(true);
       const completedTodos = await getCompletedTodo();
-      
+      console.log('Tareas completadas cargadas:', completedTodos);
       setCompletedTodos(completedTodos);
       setLoading(false);
     } catch (err) {
-      
+      console.error('Error al cargar tareas completadas:', err);
       setError('Error al cargar las tareas completadas');
       setLoading(false);
     }
@@ -42,11 +42,11 @@ const CompletedTodoList = ({ userRole }) => {
   const handleToggleComplete = async (id, completed) => {
     try {
       const newCompleted = !completed;
-      
+      console.log(`Enviando PUT /api/todos/${id} con completed: ${newCompleted}`);
       await updateTodo(id, { completed: newCompleted });
       fetchCompletedTodos();
     } catch (err) {
-      
+      console.error('Error al actualizar tarea:', err);
       setError(err.response?.data?.message || 'Error al actualizar la tarea');
     }
   };

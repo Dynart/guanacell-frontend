@@ -25,15 +25,20 @@ const Login = ({ setIsAuthenticated, setUserRole }) => {
     }
   };
   return (
-    <div className="container mt-3 ">
-      <h2>Iniciar Sesión</h2>
+    
+   
+      <div className="container-fluid align-items-center mt-5 w-50 ">
+         <div className="card text-center" >
+      <div className="mt-4 mb-4">
+        <h2>Iniciar Sesión</h2>
+      </div>
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
       <form className="" onSubmit={handleSubmit} >
-        <div className="mb-3 col-auto">
-          <label htmlFor="username" className="form-label">Usuario</label>
+        <div className="mb-5 col-auto">
+         
           <input
             type="text"
-            className="form-control"
+            className="form-control text-center"
             id="username"
             placeholder="Usuario"
             value={username}
@@ -41,11 +46,11 @@ const Login = ({ setIsAuthenticated, setUserRole }) => {
             required
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">Contraseña</label>
+        <div className="mb-5">
+        
           <input
             type="password"
-            className="form-control"
+            className="form-control text-center"
             id="password"
             placeholder="Contraseña"
             value={password}
@@ -53,8 +58,11 @@ const Login = ({ setIsAuthenticated, setUserRole }) => {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">Iniciar Sesión</button>
+        <div className="mb-4">
+          <button type="submit" className="btn btn-primary">Iniciar Sesión</button>
+        </div>
       </form>
+    </div>
     </div>
   );
 };

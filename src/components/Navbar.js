@@ -1,11 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Logo from "../img/logo.svg"
 
 const Navbar = ({isAuthenticated, userRole, handleLogout}) => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <Link className="navbar-brand" to={isAuthenticated ? "/" : "/login"}>App Precios</Link>
+        <Link className="navbar-brand" to={isAuthenticated ? "/" : "/login"}>
+        <img src={Logo} alt="" width="100" height="24" class="d-inline-block align-text-top"></img>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -17,6 +20,7 @@ const Navbar = ({isAuthenticated, userRole, handleLogout}) => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
+
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             {isAuthenticated ? (
